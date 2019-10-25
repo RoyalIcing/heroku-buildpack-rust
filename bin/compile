@@ -30,6 +30,9 @@ BUILD_PATH=""
 # run migrations by adding a release step to your Procfile:
 # `release: ./target/release/diesel migration run`
 RUST_INSTALL_DIESEL=0
+# Set this to  "1" in `RustConfig` to install clang at build time
+RUST_INSTALL_CLANG=0
+CLANG_VERSION=7.0.1
 # These flags are passed to `cargo install diesel`, e.g. '--no-default-features --features postgres'
 DIESEL_FLAGS=""
 # Default build flags to pass to `cargo build`.
@@ -149,4 +152,11 @@ if [ $RUST_INSTALL_DIESEL -eq 1 ]; then
   echo "-----> Installing diesel"
   cargo install diesel_cli $DIESEL_FLAGS || echo "already installed"
   cp $(which diesel) target/release/
+fi
+
+# Install clang so we can build crates that need it (such as onig_sys)
+if [ $RUST_INSTALL_CLANG -eq 1 ]; then
+  echo "-----> Installing clang"
+  BIN_DIR=$(cd $(dirname $0); pwd)
+  source "$BIN_DIR/steps/clang"
 fi
