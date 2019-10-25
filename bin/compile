@@ -156,7 +156,6 @@ fi
 
 # Install clang so we can build crates that need it (such as onig_sys)
 if [ $RUST_INSTALL_CLANG -eq 1 ]; then
-  echo "-----> Installing clang"
   BIN_DIR=$(cd $(dirname $0); pwd)
   source "$BIN_DIR/steps/clang"
 fi
